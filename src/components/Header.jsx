@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
-const Header = ({ searchPizzas }) => {
+const Header = () => {
   return (
     <div className="header">
       <div className="container">
@@ -15,7 +15,7 @@ const Header = ({ searchPizzas }) => {
               </div>
             </div>
           </Link>
-          <Search searchPizzas={searchPizzas} />
+          <Search />
         </div>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">

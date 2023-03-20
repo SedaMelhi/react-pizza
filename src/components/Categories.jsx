@@ -1,6 +1,9 @@
 import { useState } from 'react';
-const Categories = ({ showPizzaByCategory }) => {
+import { useDispatch } from 'react-redux';
+import { setCategoryId } from '../redux/slices/filterSlice';
+const Categories = () => {
   const [activeLink, setActiveLink] = useState(0);
+  const dispatch = useDispatch(); //Что бы обновить store необходимо вызвать метод dispatch(). Он вызывается у объекта store который вы создаёте в store.js. (то есть с помощью методов filterSlice я меняю объект состояния, а данные этого объекта передаю через dispatch в хранилище)
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
   return (
     <div className="categories">
@@ -9,8 +12,8 @@ const Categories = ({ showPizzaByCategory }) => {
           <li
             key={i}
             onClick={() => {
+              dispatch(setCategoryId(i));
               setActiveLink(i);
-              i == 0 ? showPizzaByCategory('') : showPizzaByCategory(i - 1);
             }}
             className={i === activeLink ? 'active' : ''}>
             {item}
@@ -20,4 +23,5 @@ const Categories = ({ showPizzaByCategory }) => {
     </div>
   );
 };
+
 export default Categories;
