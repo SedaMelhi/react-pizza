@@ -1,15 +1,28 @@
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useCallback, useState } from 'react';
 import { SearchContext } from '../../App';
+import debounce from 'lodash.debounce';
 import logo from './../../assets/img/search.svg';
 import close from './../../assets/img/close.svg';
 import style from './Search.module.sass';
-const Search = () => {
-  const { searchData, setSearchData } = useContext(SearchContext);
-  const inputRef = useRef();
 
+const Search = () => {
+  const { setSearchData } = useContext(SearchContext);
+  const [value, setValue] = useState('');
+  const inputRef = useRef();
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      setSearchData(str);
+    }, 500),
+    [],
+  );
   const handleClearInput = () => {
+    setValue('');
     setSearchData('');
     inputRef.current.focus();
+  };
+  const onChangeData = (e) => {
+    setValue(e.target.value);
+    updateSearchValue(e.target.value);
   };
   return (
     <div className={style.search}>
@@ -18,12 +31,10 @@ const Search = () => {
         ref={inputRef}
         className={style.searchInput}
         placeholder="Поиск пиццы..."
-        value={searchData}
-        onChange={(e) => {
-          setSearchData(e.target.value);
-        }}
+        value={value}
+        onChange={onChangeData}
       />
-      <img src={close} alt="" className={style.close} onClick={handleClearInput} />
+      {value && <img src={close} alt="" className={style.close} onClick={handleClearInput} />}
       <img src={logo} alt="" className={style.logo} />
     </div>
   );
